@@ -6,7 +6,7 @@ using System.Web.Security;
 using System.Web.SessionState;
 using System.Web.Http;
 
-namespace HttpDataServices
+namespace DynamicModelServices
 {
     public class Global : System.Web.HttpApplication
     {

@@ -5,22 +5,22 @@ using System.Web;
 using System.Web.Http;
 using System.Net.Http;
 
-namespace HttpDataServices
+namespace DynamicModelServices
 {
-    public class SalesOrderController:ApiController
+    public class QueryController:ApiController
     {
 
         [HttpGet]
-        public HttpResponseMessage RetrieveSalesOrder(HttpRequestMessage hrm)
+        public HttpResponseMessage Execute(HttpRequestMessage hrm)
         {
-            //http://localhost:51995/api/SalesOrder
+            ////http://localhost:51995/api/Query
             return new HttpResponseMessage(System.Net.HttpStatusCode.OK);
         }
 
         [HttpGet]
-        public HttpResponseMessage RetrieveSalesOrder(string id)
+        public HttpResponseMessage Execute(string id)
         {
-            //http://localhost:51995/api/SalesOrder
+            //http://localhost:51995/api/Query
             return new HttpResponseMessage(System.Net.HttpStatusCode.OK);
         }
     }
