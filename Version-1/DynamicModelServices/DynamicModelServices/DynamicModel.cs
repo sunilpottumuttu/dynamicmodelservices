@@ -20,8 +20,9 @@ namespace DynamicModelServices
     /// </summary>
     public class DynamicModel : DynamicObject
     {
-        DbProviderFactory _factory;
-        string ConnectionString;
+        private DbProviderFactory __dbProviderFactory;
+        private string __connectionString;
+
         public static DynamicModel Open(string connectionStringName)
         {
             dynamic dm = new DynamicModel(connectionStringName);
@@ -38,8 +39,8 @@ namespace DynamicModelServices
             if (!string.IsNullOrWhiteSpace(ConfigurationManager.ConnectionStrings[connectionStringName].ProviderName))
                 _providerName = ConfigurationManager.ConnectionStrings[connectionStringName].ProviderName;
 
-            _factory = DbProviderFactories.GetFactory(_providerName);
-            ConnectionString = ConfigurationManager.ConnectionStrings[connectionStringName].ConnectionString;
+            __dbProviderFactory = DbProviderFactories.GetFactory(_providerName);
+            __connectionString = ConfigurationManager.ConnectionStrings[connectionStringName].ConnectionString;
         }
 
         /// <summary>
@@ -182,7 +183,7 @@ namespace DynamicModelServices
         /// </summary>
         DbCommand CreateCommand(string sql, DbConnection conn, params object[] args)
         {
-            var result = _factory.CreateCommand();
+            var result = __dbProviderFactory.CreateCommand();
             result.Connection = conn;
             result.CommandText = sql;
             if (args.Length > 0)
@@ -194,8 +195,8 @@ namespace DynamicModelServices
         /// </summary>
         public virtual DbConnection OpenConnection()
         {
-            var result = _factory.CreateConnection();
-            result.ConnectionString = ConnectionString;
+            var result = __dbProviderFactory.CreateConnection();
+            result.ConnectionString = __connectionString;
             result.Open();
             return result;
         }
