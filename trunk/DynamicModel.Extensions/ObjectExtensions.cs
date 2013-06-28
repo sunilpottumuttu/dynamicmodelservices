@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 using System.Data.SqlClient;
 using System.Text.RegularExpressions;
 
-namespace DynamicModelServices
+namespace DynamicModel.Extensions
 {
     public static class ObjectExtensions
     {
