@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 using System.Data.SqlClient;
 using System.Text.RegularExpressions;
 
-namespace DynamicModelServices
+namespace DynamicModel.Lib
 {
     public static class DB
     {
@@ -21,7 +21,8 @@ namespace DynamicModelServices
             {
                 if (ConfigurationManager.ConnectionStrings.Count > 1)
                 {
-                    return new DynamicModel(ConfigurationManager.ConnectionStrings[1].Name);
+                    //return new DynamicModel(ConfigurationManager.ConnectionStrings[1].Name);
+                    return new DynamicModel(ConfigurationManager.ConnectionStrings["DynamicModel"].Name);
                 }
                 throw new InvalidOperationException("Need a connection string name - can't determine what it is");
             }

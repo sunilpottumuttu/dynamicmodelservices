@@ -10,18 +10,67 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data.SqlClient;
 using System.Text.RegularExpressions;
+using System.ComponentModel;
+using DynamicModel.Extensions;
 
-
-namespace DynamicModelServices
+namespace DynamicModel.Lib
 {
 
     /// <summary>
-    /// A class that wraps your database table in Dynamic Funtime
+    /// A class that wraps your database table in Dynamic Model
     /// </summary>
     public class DynamicModel : DynamicObject
     {
         private DbProviderFactory __dbProviderFactory;
         private string __connectionString;
+        /// <summary>
+        /// List out all the schema bits for use with ... whatever
+        /// </summary>
+        private IEnumerable<dynamic> __schema;
+
+        [DefaultValue("System.Data.SqlClient")]
+        public string ProviderName 
+        { 
+            get; 
+            private set; 
+        }
+
+        public string DescriptorField 
+        { 
+            get; 
+            protected set; 
+        }
+        
+        /// <summary>
+        /// Creates an empty Expando set with defaults from the DB
+        /// </summary>
+        public dynamic Prototype
+        {
+            get
+            {
+                dynamic result = new ExpandoObject();
+                var schema = Schema;
+                foreach (dynamic column in schema)
+                {
+                    var dc = (IDictionary<string, object>)result;
+                    dc.Add(column.COLUMN_NAME, DefaultValue(column));
+                }
+                result._Table = this;
+                return result;
+            }
+        }
+
+
+        public IEnumerable<dynamic> Schema
+        {
+            get
+            {
+                if (__schema == null)
+                    __schema = Query("SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = @0", TableName);
+                return __schema;
+            }
+        }
+
 
         public static DynamicModel Open(string connectionStringName)
         {
@@ -34,12 +83,15 @@ namespace DynamicModelServices
             TableName = tableName == "" ? this.GetType().Name : tableName;
             PrimaryKeyField = string.IsNullOrEmpty(primaryKeyField) ? "ID" : primaryKeyField;
             DescriptorField = descriptorField;
-            var _providerName = "System.Data.SqlClient";
+            //var __providerName = "System.Data.SqlClient";
 
+            //if (!string.IsNullOrWhiteSpace(ConfigurationManager.ConnectionStrings[connectionStringName].ProviderName))
+            //    __providerName = ConfigurationManager.ConnectionStrings[connectionStringName].ProviderName;
             if (!string.IsNullOrWhiteSpace(ConfigurationManager.ConnectionStrings[connectionStringName].ProviderName))
-                _providerName = ConfigurationManager.ConnectionStrings[connectionStringName].ProviderName;
+                this.ProviderName = ConfigurationManager.ConnectionStrings[connectionStringName].ProviderName;
 
-            __dbProviderFactory = DbProviderFactories.GetFactory(_providerName);
+            //__dbProviderFactory = DbProviderFactories.GetFactory(__providerName);
+            __dbProviderFactory = DbProviderFactories.GetFactory(this.ProviderName);
             __connectionString = ConfigurationManager.ConnectionStrings[connectionStringName].ConnectionString;
         }
 
@@ -91,40 +143,7 @@ namespace DynamicModelServices
             return result;
         }
 
-        /// <summary>
-        /// Creates an empty Expando set with defaults from the DB
-        /// </summary>
-        public dynamic Prototype
-        {
-            get
-            {
-                dynamic result = new ExpandoObject();
-                var schema = Schema;
-                foreach (dynamic column in schema)
-                {
-                    var dc = (IDictionary<string, object>)result;
-                    dc.Add(column.COLUMN_NAME, DefaultValue(column));
-                }
-                result._Table = this;
-                return result;
-            }
-        }
-
-        public string DescriptorField { get; protected set; }
-        
-        /// <summary>
-        /// List out all the schema bits for use with ... whatever
-        /// </summary>
-        IEnumerable<dynamic> _schema;
-        public IEnumerable<dynamic> Schema
-        {
-            get
-            {
-                if (_schema == null)
-                    _schema = Query("SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = @0", TableName);
-                return _schema;
-            }
-        }
+       
 
         /// <summary>
         /// Enumerates the reader yielding the result - thanks to Jeroen Haegebaert
@@ -178,10 +197,11 @@ namespace DynamicModelServices
             }
             return result;
         }
+
         /// <summary>
         /// Creates a DBCommand that you can use for loving your database.
         /// </summary>
-        DbCommand CreateCommand(string sql, DbConnection conn, params object[] args)
+        private DbCommand CreateCommand(string sql, DbConnection conn, params object[] args)
         {
             var result = __dbProviderFactory.CreateCommand();
             result.Connection = conn;
