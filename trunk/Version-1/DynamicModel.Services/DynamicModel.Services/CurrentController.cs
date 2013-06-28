@@ -46,6 +46,7 @@ namespace DynamicModel.Services
          [HttpGet]
          public HttpResponseMessage Query(HttpRequestMessage hrm)
          {
+
              try
              {
                  string sql = hrm.Content.ReadAsStringAsync().Result;
@@ -65,8 +66,41 @@ namespace DynamicModel.Services
                  response.Content = new StringContent(ex.Message.ToString(), Encoding.Default);
                  throw new HttpResponseException(response);
              }
-
          }
+
+
+         /// <summary>
+         /// Ex: http://localhost:3333/DB/Current/Query
+         /// </summary>
+         /// <param name="HttpRequestMessage"></param>
+         /// <returns></returns>
+         [HttpGet]
+         public HttpResponseMessage All(HttpRequestMessage hrm)
+         {
+
+             try
+             {
+                 string sql = hrm.Content.ReadAsStringAsync().Result;
+                 DB.Current.TableName = "Categories";
+                 IEnumerable<dynamic> data = DB.Current.All(where: "", orderBy: "", limit: 0, columns: "*");
+
+                 string jsonResults = JsonConvert.SerializeObject(data);
+
+                 //var response = this.Request.CreateResponse(HttpStatusCode.OK);
+                 var response = new HttpResponseMessage(HttpStatusCode.OK);
+                 response.Content = new StringContent(jsonResults);
+
+                 return response;
+             }
+             catch (Exception ex)
+             {
+                 var response = new HttpResponseMessage(HttpStatusCode.InternalServerError);
+                 response.Content = new StringContent(ex.Message.ToString(), Encoding.Default);
+                 throw new HttpResponseException(response);
+             }
+         }
+
+
 
     }
 }
