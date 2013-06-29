@@ -72,11 +72,19 @@ namespace DynamicModelLib
         }
 
 
-        public static DynamicModel Open(string connectionStringName)
-        {
-            dynamic dm = new DynamicModel(connectionStringName);
-            return dm;
+        public virtual string PrimaryKeyField 
+        { 
+            get; 
+            set; 
         }
+
+        public virtual string TableName { get; set; }
+
+        //public static DynamicModel Open(string connectionStringName)
+        //{
+        //    dynamic dm = new DynamicModel(connectionStringName);
+        //    return dm;
+        //}
 
         public DynamicModel(string connectionStringName, string tableName = "",string primaryKeyField = "", string descriptorField = "")
         {
@@ -143,8 +151,6 @@ namespace DynamicModelLib
             return result;
         }
 
-       
-
         /// <summary>
         /// Enumerates the reader yielding the result - thanks to Jeroen Haegebaert
         /// </summary>
@@ -175,16 +181,16 @@ namespace DynamicModelLib
 
         }
 
-        public virtual IEnumerable<dynamic> Query(string sql, DbConnection connection, params object[] args)
-        {
-            using (var rdr = CreateCommand(sql, connection, args).ExecuteReader())
-            {
-                while (rdr.Read())
-                {
-                    yield return rdr.RecordToExpando(); ;
-                }
-            }
-        }
+        //public virtual IEnumerable<dynamic> Query(string sql, DbConnection connection, params object[] args)
+        //{
+        //    using (var rdr = CreateCommand(sql, connection, args).ExecuteReader())
+        //    {
+        //        while (rdr.Read())
+        //        {
+        //            yield return rdr.RecordToExpando(); ;
+        //        }
+        //    }
+        //}
         /// <summary>
         /// Returns a single result
         /// </summary>
@@ -273,7 +279,8 @@ namespace DynamicModelLib
             }
             return result;
         }
-        public virtual string PrimaryKeyField { get; set; }
+
+       
         /// <summary>
         /// Conventionally introspects the object passed in for a field that 
         /// looks like a PK. If you've named your PrimaryKeyField, this becomes easy
@@ -292,7 +299,7 @@ namespace DynamicModelLib
             o.ToDictionary().TryGetValue(PrimaryKeyField, out result);
             return result;
         }
-        public virtual string TableName { get; set; }
+        
         /// <summary>
         /// Returns all records complying with the passed-in WHERE clause and arguments, 
         /// ordered as specified, limited (TOP) by limit.
@@ -302,6 +309,7 @@ namespace DynamicModelLib
             string sql = BuildSelect(where, orderBy, limit);
             return Query(string.Format(sql, columns, TableName), args);
         }
+
         private static string BuildSelect(string where, string orderBy, int limit)
         {
             string sql = limit > 0 ? "SELECT TOP " + limit + " {0} FROM {1} " : "SELECT {0} FROM {1} ";
@@ -424,6 +432,7 @@ namespace DynamicModelLib
             var commands = BuildCommands(things);
             return Execute(commands);
         }
+
         public virtual DbCommand CreateInsertCommand(dynamic expando)
         {
             DbCommand result = null;
@@ -450,6 +459,7 @@ namespace DynamicModelLib
             else throw new InvalidOperationException("Can't parse this object to the database - there are no properties set");
             return result;
         }
+
         /// <summary>
         /// Creates a command for use with transactions - internal stuff mostly, but here for you to play with
         /// </summary>
@@ -482,6 +492,7 @@ namespace DynamicModelLib
             else throw new InvalidOperationException("No parsable object was sent in - could not divine any name/value pairs");
             return result;
         }
+
         /// <summary>
         /// Removes one or more records from the DB according to the passed-in WHERE
         /// </summary>
@@ -509,6 +520,7 @@ namespace DynamicModelLib
 
         //Temporary holder for error messages
         public IList<string> Errors = new List<string>();
+
         /// <summary>
         /// Adds a record to the database. You can pass in an Anonymous object, an ExpandoObject,
         /// A regular old POCO, or a NameValueColletion from a Request.Form or Request.QueryString
@@ -538,6 +550,7 @@ namespace DynamicModelLib
                 return null;
             }
         }
+
         /// <summary>
         /// Updates a record in the database. You can pass in an Anonymous object, an ExpandoObject,
         /// A regular old POCO, or a NameValueCollection from a Request.Form or Request.QueryString
@@ -557,6 +570,7 @@ namespace DynamicModelLib
             }
             return result;
         }
+
         /// <summary>
         /// Removes one or more records from the DB according to the passed-in WHERE
         /// </summary>
