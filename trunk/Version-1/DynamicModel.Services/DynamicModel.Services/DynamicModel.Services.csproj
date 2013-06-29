@@ -71,7 +71,6 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="DynamicModelServices.csproj" />
     <Content Include="Global.asax" />
     <Content Include="Readme.txt" />
     <Content Include="Web.config" />
@@ -92,9 +91,9 @@
     <Compile Include="TableController.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\DynamicModel.Lib\DynamicModel.Lib.csproj">
-      <Project>{25A2254C-12B4-4885-9E9A-5C407290941D}</Project>
-      <Name>DynamicModel.Lib</Name>
+    <ProjectReference Include="..\..\DynamicModelLib\DynamicModelLib.csproj">
+      <Project>{F080DC8E-7D3D-4BAE-8338-CA5418B25B69}</Project>
+      <Name>DynamicModelLib</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

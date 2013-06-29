@@ -6,7 +6,7 @@ using System.Web.Http;
 using System.Net.Http;
 using System.Net;
 using Newtonsoft.Json;
-using DynamicModel.Lib;
+using DynamicModelLib;
 using System.Text;
 
 namespace DynamicModel.Services
@@ -69,6 +69,31 @@ namespace DynamicModel.Services
          }
 
 
+         [HttpGet]
+         public HttpResponseMessage Scalar(HttpRequestMessage hrm)
+         {
+             
+             try
+             {
+                 string sql = hrm.Content.ReadAsStringAsync().Result;
+                 object data = DB.Current.Scalar(sql);
+
+                 string jsonResults = JsonConvert.SerializeObject(data);
+
+                 var response = new HttpResponseMessage(HttpStatusCode.OK);
+                 response.Content = new StringContent(jsonResults);
+
+                 return response;
+             }
+             catch (Exception ex)
+             {
+                 var response = new HttpResponseMessage(HttpStatusCode.InternalServerError);
+                 response.Content = new StringContent(ex.Message.ToString(), Encoding.Default);
+                 throw new HttpResponseException(response);
+             }
+         }
+
+
          /// <summary>
          /// Ex: http://localhost:3333/DB/Current/Query
          /// </summary>
@@ -99,6 +124,8 @@ namespace DynamicModel.Services
                  throw new HttpResponseException(response);
              }
          }
+
+
 
 
 
