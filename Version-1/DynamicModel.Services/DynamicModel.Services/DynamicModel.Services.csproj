@@ -91,9 +91,9 @@
     <Compile Include="TableController.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\DynamicModelLib\DynamicModelLib.csproj">
-      <Project>{F080DC8E-7D3D-4BAE-8338-CA5418B25B69}</Project>
-      <Name>DynamicModelLib</Name>
+    <ProjectReference Include="..\..\Dynamic.Data\Dynamic.Data.csproj">
+      <Project>{A7D790FA-6DE9-4E36-8FEB-FE268065FB38}</Project>
+      <Name>Dynamic.Data</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

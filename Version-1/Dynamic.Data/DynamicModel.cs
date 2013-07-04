@@ -11,9 +11,8 @@ using System.Threading.Tasks;
 using System.Data.SqlClient;
 using System.Text.RegularExpressions;
 using System.ComponentModel;
-using DynamicModel.Extensions;
 
-namespace DynamicModelLib
+namespace Dynamic.Data
 {
 
     /// <summary>
