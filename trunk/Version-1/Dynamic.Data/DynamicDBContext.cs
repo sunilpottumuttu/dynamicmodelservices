@@ -11,9 +11,9 @@ using System.Threading.Tasks;
 using System.Data.SqlClient;
 using System.Text.RegularExpressions;
 
-namespace DynamicModelLib
+namespace Dynamic.Data
 {
-    public static class DB
+    public static class DynamicDBContext
     {
         public static DynamicModel Current
         {

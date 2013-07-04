@@ -6,7 +6,7 @@ using System.Web.Http;
 using System.Net.Http;
 using System.Net;
 using Newtonsoft.Json;
-using DynamicModelLib;
+using Dynamic.Data;
 using System.Text;
 
 namespace DynamicModel.Services
@@ -26,7 +26,7 @@ namespace DynamicModel.Services
             try
             {
                 response.StatusCode = HttpStatusCode.OK;
-                response.Content = new StringContent(DB.Current.ProviderName.ToString());
+                response.Content = new StringContent(DynamicDBContext.Current.ProviderName.ToString());
             }
             catch (Exception ex)
             {
@@ -50,7 +50,7 @@ namespace DynamicModel.Services
              try
              {
                  string sql = hrm.Content.ReadAsStringAsync().Result;
-                 IEnumerable<dynamic> data = DB.Current.Query(sql);
+                 IEnumerable<dynamic> data = DynamicDBContext.Current.Query(sql);
 
                  string jsonResults = JsonConvert.SerializeObject(data);
 
@@ -76,7 +76,7 @@ namespace DynamicModel.Services
              try
              {
                  string sql = hrm.Content.ReadAsStringAsync().Result;
-                 object data = DB.Current.Scalar(sql);
+                 object data = DynamicDBContext.Current.Scalar(sql);
 
                  string jsonResults = JsonConvert.SerializeObject(data);
 
@@ -106,8 +106,8 @@ namespace DynamicModel.Services
              try
              {
                  string sql = hrm.Content.ReadAsStringAsync().Result;
-                 DB.Current.TableName = "Categories";
-                 IEnumerable<dynamic> data = DB.Current.All(where: "", orderBy: "", limit: 0, columns: "*");
+                 DynamicDBContext.Current.TableName = "Categories";
+                 IEnumerable<dynamic> data = DynamicDBContext.Current.All(where: "", orderBy: "", limit: 0, columns: "*");
 
                  string jsonResults = JsonConvert.SerializeObject(data);
 

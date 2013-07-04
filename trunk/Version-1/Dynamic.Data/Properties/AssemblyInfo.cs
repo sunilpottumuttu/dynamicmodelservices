@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("DynamicModel.Extensions")]
+[assembly: AssemblyTitle("Dynamic.Data")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Microsoft")]
-[assembly: AssemblyProduct("DynamicModel.Extensions")]
+[assembly: AssemblyProduct("Dynamic.Data")]
 [assembly: AssemblyCopyright("Copyright © Microsoft 2013")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("836b74d3-1ecd-4216-9327-3276461c0959")]
+[assembly: Guid("e7b4da75-87c7-4e6e-853d-54470692212d")]
 
 // Version information for an assembly consists of the following four values:
 //
