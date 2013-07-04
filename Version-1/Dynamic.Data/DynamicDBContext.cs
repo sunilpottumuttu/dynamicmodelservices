@@ -21,7 +21,6 @@ namespace Dynamic.Data
             {
                 if (ConfigurationManager.ConnectionStrings.Count > 1)
                 {
-                    //return new DynamicModel(ConfigurationManager.ConnectionStrings[1].Name);
                     return new DynamicModel(ConfigurationManager.ConnectionStrings["DynamicModel"].Name);
                 }
                 throw new InvalidOperationException("Need a connection string name - can't determine what it is");

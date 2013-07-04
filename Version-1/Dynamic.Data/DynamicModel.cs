@@ -16,7 +16,7 @@ namespace Dynamic.Data
 {
 
     /// <summary>
-    /// A class that wraps your database table in Dynamic Model
+    /// A class that wraps database tables in Dynamic Model
     /// </summary>
     public class DynamicModel : DynamicObject
     {
@@ -107,6 +107,9 @@ namespace Dynamic.Data
         /// </summary>
         public dynamic CreateFrom(NameValueCollection coll)
         {
+
+            
+
             dynamic result = new ExpandoObject();
             var dc = (IDictionary<string, object>)result;
             var schema = Schema;
