@@ -50,7 +50,7 @@ namespace DynamicModel.Services
              try
              {
                  string sql = hrm.Content.ReadAsStringAsync().Result;
-                 IEnumerable<dynamic> data = DynamicDBContext.Current.Query(sql);
+                 IEnumerable<dynamic> data = DynamicDBContext.Current.Execute(sql);
 
                  string jsonResults = JsonConvert.SerializeObject(data);
 
@@ -99,31 +99,31 @@ namespace DynamicModel.Services
          /// </summary>
          /// <param name="HttpRequestMessage"></param>
          /// <returns></returns>
-         [HttpGet]
-         public HttpResponseMessage All(HttpRequestMessage hrm)
-         {
+         //[HttpGet]
+         //public HttpResponseMessage All(HttpRequestMessage hrm)
+         //{
 
-             try
-             {
-                 string sql = hrm.Content.ReadAsStringAsync().Result;
-                 DynamicDBContext.Current.TableName = "Categories";
-                 IEnumerable<dynamic> data = DynamicDBContext.Current.All(where: "", orderBy: "", limit: 0, columns: "*");
+         //    //try
+         //    //{
+         //    //    string sql = hrm.Content.ReadAsStringAsync().Result;
+         //    //    DynamicDBContext.Current.TableName = "Categories";
+         //    //    IEnumerable<dynamic> data = DynamicDBContext.Current.All(where: "", orderBy: "", limit: 0, columns: "*");
 
-                 string jsonResults = JsonConvert.SerializeObject(data);
+         //    //    string jsonResults = JsonConvert.SerializeObject(data);
 
-                 //var response = this.Request.CreateResponse(HttpStatusCode.OK);
-                 var response = new HttpResponseMessage(HttpStatusCode.OK);
-                 response.Content = new StringContent(jsonResults);
+         //    //    //var response = this.Request.CreateResponse(HttpStatusCode.OK);
+         //    //    var response = new HttpResponseMessage(HttpStatusCode.OK);
+         //    //    response.Content = new StringContent(jsonResults);
 
-                 return response;
-             }
-             catch (Exception ex)
-             {
-                 var response = new HttpResponseMessage(HttpStatusCode.InternalServerError);
-                 response.Content = new StringContent(ex.Message.ToString(), Encoding.Default);
-                 throw new HttpResponseException(response);
-             }
-         }
+         //    //    return response;
+         //    //}
+         //    //catch (Exception ex)
+         //    //{
+         //    //    var response = new HttpResponseMessage(HttpStatusCode.InternalServerError);
+         //    //    response.Content = new StringContent(ex.Message.ToString(), Encoding.Default);
+         //    //    throw new HttpResponseException(response);
+         //    //}
+         //}
 
 
 
