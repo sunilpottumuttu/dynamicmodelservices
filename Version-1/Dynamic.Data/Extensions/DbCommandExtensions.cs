@@ -18,17 +18,17 @@ namespace Dynamic.Data
         /// <summary>
         /// Extension method for adding in a bunch of parameters
         /// </summary>
-        public static void AddParams(this DbCommand cmd, params object[] args)
+        public static void AddParameters(this DbCommand cmd, params object[] args)
         {
             foreach (var item in args)
             {
-                AddParam(cmd, item);
+                AddParameter(cmd, item);
             }
         }
         /// <summary>
         /// Extension for adding single parameter
         /// </summary>
-        public static void AddParam(this DbCommand cmd, object item)
+        public static void AddParameter(this DbCommand cmd, object item)
         {
             var p = cmd.CreateParameter();
             p.ParameterName = string.Format("@{0}", cmd.Parameters.Count);

@@ -15,26 +15,27 @@ namespace Dynamic.Data
 {
     public static class IDataReaderExtensions
     {
-        /// <summary>
-        /// Turns an IDataReader to a Dynamic list of things
-        /// </summary>
-        public static List<dynamic> ToExpandoList(this IDataReader rdr)
+      
+        public static List<dynamic> ToExpandoList(this IDataReader reader)
         {
             var result = new List<dynamic>();
-            while (rdr.Read())
+            while (reader.Read())
             {
-                result.Add(rdr.RecordToExpando());
+                result.Add(reader.DataRowToExpando());
             }
             return result;
         }
 
-        public static dynamic RecordToExpando(this IDataReader rdr)
+        public static dynamic DataRowToExpando(this IDataReader reader)
         {
-            dynamic e = new ExpandoObject();
-            var d = e as IDictionary<string, object>;
-            for (int i = 0; i < rdr.FieldCount; i++)
-                d.Add(rdr.GetName(i), DBNull.Value.Equals(rdr[i]) ? null : rdr[i]);
-            return e;
+            
+            dynamic eo = new ExpandoObject();
+            var dict = eo as IDictionary<string, object>;
+            for (int i = 0; i < reader.FieldCount; i++)
+            { 
+                dict.Add(reader.GetName(i), DBNull.Value.Equals(reader[i]) ? null : reader[i]); 
+            }
+            return eo;
         }
     }
 }

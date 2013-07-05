@@ -41,9 +41,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="DynamicModel.cs.bak" />
     <Compile Include="Extensions\DbCommandExtensions.cs" />
     <Compile Include="DynamicDBContext.cs" />
     <Compile Include="DynamicModel.cs" />
+    <Compile Include="Extensions\ExpandoObjectExtensions.cs" />
     <Compile Include="Extensions\IDataReaderExtensions.cs" />
     <Compile Include="Extensions\ObjectExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

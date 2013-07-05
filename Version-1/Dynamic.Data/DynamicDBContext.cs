@@ -15,16 +15,28 @@ namespace Dynamic.Data
 {
     public static class DynamicDBContext
     {
+
+        private static string __connectionString = ConfigurationManager.ConnectionStrings["DynamicModel"].Name;
+        public static string  ConnectionString 
+        {
+            get { return __connectionString; }
+            set { __connectionString = value; }
+        }
+
         public static DynamicModel Current
         {
             get
             {
-                if (ConfigurationManager.ConnectionStrings.Count > 1)
+                try
                 {
-                    return new DynamicModel(ConfigurationManager.ConnectionStrings["DynamicModel"].Name);
+                    return new DynamicModel(ConnectionString);
                 }
-                throw new InvalidOperationException("Need a connection string name - can't determine what it is");
+                catch
+                {
+                    throw new InvalidOperationException("Please provide a connection string with name - DynamicModel");
+                }
             }
+            
         }
     }
 }
